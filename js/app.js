@@ -62,7 +62,7 @@ Enemy.prototype.render = function() {
 // The following functions checks collisions between enemies and the player
 // by comparing their locations.
 Enemy.prototype.checkCollision = function() {
-    if (Math.abs(this.x + 25 - player.x) < 5 && this.y - 10 == player.y) {
+    if (Math.abs(this.x - player.x) < 65 && this.y - 10 == player.y) {
         // If a collision is detected, the score is reduced by 5 points,
         // and the player is returned to the inital location.
         score.update(-5);
@@ -80,7 +80,7 @@ var enemyChanger = function(key) {
         // whether its odd or even, odd counter will display a rock, while an
         // even number will display a bug (which gives a toggle effect).
         if (counterEnemy % 2 == 1) {
-            for (enemy in allEnemies) {
+            for (var enemy in allEnemies) {
                 this.choice = 1;
             }
         } else {
@@ -195,12 +195,12 @@ Gems.prototype.update = function() {
     // Starting from second 5 and very 10 seconds, a new gem is shown for 5 seconds.
     // The instant variable with the modulus operator is used to determine the time
     // lapsed and the show a gem at the specified time.
-    if (instant % 300 == 0 && (instant / 100) % 2 == 1) {
+    if (instant % 300 === 0 && (instant / 100) % 2 == 1) {
         this.x = this.xLocations[Math.floor(Math.random()*this.xLocations.length)];
         this.y = this.yLocations[Math.floor(Math.random()*this.yLocations.length)];
     // If a gem is not collected by the player, it disappears 5 seconds after it was displayed.
     // The gem is drawn outside the canvas
-    } else if (instant % 300 == 0 && (instant / 100) % 2 == 0) {
+    } else if (instant % 300 === 0 && (instant / 100) % 2 === 0) {
         this.x = -100;
         this.y = -100;
     }
