@@ -14,17 +14,24 @@ var instant = 0;
 
 // Enemy class, it has the methods update(), render() and checkCollision()
 var Enemy = function() {
-    // The initial x location for all enemy instances are constant, while the y location is
-    // chosen randomly from an array (yLocations) which contains all possible y positions for enemies. 
-    this.x = -100;
-    var yLocations = [60,145,230];
-    this.y = yLocations[Math.floor(Math.random()*yLocations.length)];
-    // The speed of each enemy is specified randomly using Math.random() function and then scaled
-    // to acheive the desired speed.
-    this.speed = ((Math.random() * 3) + 1)*100;
+    // The array (yLocations) contains all possible y positions for enemies. 
+    this.yLocations = [60,145,230];
+    // This is a call to the dynamics() method which will give the enemy
+    // an initial position and speed.
+    this.dynamics();
     // The array containing images for enemy sprites: bugs or rocks.
     this.sprites = ['images/enemy-bug.png', 'images/Rock.png'];
 };
+
+Enemy.prototype.dynamics = function() {
+    // The initial x location for all enemy instances are constant, while the y location is
+    // chosen randomly from the array (yLocations)
+    this.x = -100;
+    this.y = this.yLocations[Math.floor(Math.random()*this.yLocations.length)];
+    // The speed of each enemy is specified randomly using Math.random() function and then scaled
+    // to acheive the desired speed.
+    this.speed = ((Math.random() * 3) + 1)*100;
+}
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -38,11 +45,9 @@ Enemy.prototype.update = function(dt) {
     // with the player.
     this.checkCollision();
     // This statement checks for enemies leaving the canvas on the right edge, if an enemy
-    // leaves the canvas, it's removed from allEnemies and then new Enemy instance is created.
+    // leaves the canvas, it's assigned a new position (at the left of the canvas) and speed.
     if (this.x > 600) {
-        var index = allEnemies.indexOf(this);
-        allEnemies.splice(index, 1);
-        allEnemies.push(new Enemy());
+        this.dynamics();
     };
 };
 
