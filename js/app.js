@@ -95,54 +95,57 @@ var enemyChanger = function(key) {
 // handleInput() methods.
 var Player = function() {
     // Initial position of the player
-    obj = {x: 201, y: 390};
+    this.x = 201;
+    this.y = 390;
     // Array containing all images of the player character.
-    var sprites = ['images/char-boy.png',
+    this.sprites = ['images/char-boy.png',
                     'images/char-cat-girl.png',
                     'images/char-horn-girl.png',
                     'images/char-pink-girl.png',
                     'images/char-princess-girl.png'];
     // spriteCounter is a variable holding the index of the player's image
     // to be shown. It is then used to load the image for the player.
-    var spriteCounter = 0;
-    obj.sprite = sprites[spriteCounter];
-    // The update method checks if the player reached the river, is so,
-    // the score is incremented by 10, and the player is returned to the initial location.
-    obj.update = function() {
-        if (this.y <= -35) {
-            this.y = 390;
-            // A call to the update method of class Score.
-            score.update(10);
+    this.spriteCounter = 0;
+    this.sprite = this.sprites[this.spriteCounter];
+};
+
+// The update method checks if the player reached the river, is so,
+// the score is incremented by 10, and the player is returned to the initial location.
+Player.prototype.update = function() {
+    if (this.y <= -35) {
+        this.y = 390;
+        // A call to the update method of class Score.
+        score.update(10);
+    }
+};
+
+// Render method of the Player class
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+// The event handler for 'keydown' event. it decides whether to move the
+// player up, left, right, or down.
+Player.prototype.handleInput = function(key) {
+    if (key == 'up' && this.y > -35) {
+        this.y = this.y - 85;
+    } else if (key == 'down' && this.y < 390) {
+        this.y = this.y + 85;
+    } else if (key == 'left' && this.x > 1) {
+        this.x = this.x - 100;
+    } else if (key == 'right' && this.x < 400) {
+        this.x = this.x + 100;
+    // If the key 'c' is pressed, the player image is changed by increasing
+    // spriteCounter variable which determines the image to be loaded.
+    } else if (key == 'c') {
+        // spriteCounter is reset every time is exceeds the length of the sprites array.
+        if (this.spriteCounter + 1 == 5) {
+            this.spriteCounter = -1;
         }
-    };
-    // Render method of the Player class
-    obj.render = function() {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    };
-    // The event handler for 'keydown' event. it decides whether to move the
-    // player up, left, right, or down.
-    obj.handleInput = function(key) {
-        if (key == 'up' && this.y > -35) {
-            this.y = this.y - 85;
-        } else if (key == 'down' && this.y < 390) {
-            this.y = this.y + 85;
-        } else if (key == 'left' && this.x > 1) {
-            this.x = this.x - 100;
-        } else if (key == 'right' && this.x < 400) {
-            this.x = this.x + 100;
-        // If the key 'c' is pressed, the player image is changed by increasing
-        // spriteCounter variable which determines the image to be loaded.
-        } else if (key == 'c') {
-            // spriteCounter is reset every time is exceeds the length of the sprites array.
-            if (spriteCounter + 1 == 5) {
-                spriteCounter = -1;
-            }
-            spriteCounter ++;
-            // The new player image is saved.
-            this.sprite = sprites[spriteCounter];
-        }
-    };
-    return obj;
+        this.spriteCounter ++;
+        // The new player image is saved.
+        this.sprite = this.sprites[this.spriteCounter];
+    }
 };
 
 // Score class, its methods are render() and update()
@@ -226,7 +229,7 @@ Gems.prototype.gemCheckCollision = function() {
 };
 
 // Objects are instantiated.
-var player = Player();
+var player = new Player();
 var allEnemies = [];
 allEnemies.push(new Enemy());
 allEnemies.push(new Enemy());
