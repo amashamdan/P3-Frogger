@@ -14,7 +14,7 @@ var instant = 0;
 
 // Enemy class, it has the methods update(), render() and checkCollision()
 var Enemy = function() {
-    // The array (yLocations) contains all possible y positions for enemies. 
+    // The array (yLocations) contains all possible y positions for enemies.
     this.yLocations = [60,145,230];
     // This is a call to the dynamics() method which will give the enemy
     // an initial position and speed.
@@ -31,7 +31,7 @@ Enemy.prototype.dynamics = function() {
     // The speed of each enemy is specified randomly using Math.random() function and then scaled
     // to acheive the desired speed.
     this.speed = ((Math.random() * 3) + 1)*100;
-}
+};
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -41,14 +41,14 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     // x position for all enemies is updated in the line below
     this.x = (this.x + (this.speed)*dt);
-    // the following call of Enemy.checkCollision method checks if an enemy has collided 
+    // the following call of Enemy.checkCollision method checks if an enemy has collided
     // with the player.
     this.checkCollision();
     // This statement checks for enemies leaving the canvas on the right edge, if an enemy
     // leaves the canvas, it's assigned a new position (at the left of the canvas) and speed.
     if (this.x > 600) {
         this.dynamics();
-    };
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -60,7 +60,7 @@ Enemy.prototype.render = function() {
 };
 
 // The following functions checks collisions between enemies and the player
-// by comparing their locations.  
+// by comparing their locations.
 Enemy.prototype.checkCollision = function() {
     if (Math.abs(this.x + 25 - player.x) < 5 && this.y - 10 == player.y) {
         // If a collision is detected, the score is reduced by 5 points,
@@ -68,7 +68,7 @@ Enemy.prototype.checkCollision = function() {
         score.update(-5);
         player.x = 201;
         player.y = 390;
-    };
+    }
 };
 
 // This is a helper function to change the image of the enemies' character
@@ -82,13 +82,13 @@ var enemyChanger = function(key) {
         if (counterEnemy % 2 == 1) {
             for (enemy in allEnemies) {
                 this.choice = 1;
-            };
+            }
         } else {
             for (enemy in allEnemies) {
                 this.choice = 0;
-            };
-        };
-    };
+            }
+        }
+    }
 };
 
 // This is Player class, it has an update(), render() and
@@ -101,9 +101,9 @@ var Player = function() {
                     'images/char-cat-girl.png',
                     'images/char-horn-girl.png',
                     'images/char-pink-girl.png',
-                    'images/char-princess-girl.png']; 
+                    'images/char-princess-girl.png'];
     // spriteCounter is a variable holding the index of the player's image
-    // to be shown. It is then used to load the image for the player. 
+    // to be shown. It is then used to load the image for the player.
     var spriteCounter = 0;
     obj.sprite = sprites[spriteCounter];
     // The update method checks if the player reached the river, is so,
@@ -140,7 +140,7 @@ var Player = function() {
             spriteCounter ++;
             // The new player image is saved.
             this.sprite = sprites[spriteCounter];
-        };
+        }
     };
     return obj;
 };
@@ -194,7 +194,7 @@ var Gems = function() {
 Gems.prototype.update = function() {
     // Starting from second 5 and very 10 seconds, a new gem is shown for 5 seconds.
     // The instant variable with the modulus operator is used to determine the time
-    // lapsed and the show a gem at the specified time.  
+    // lapsed and the show a gem at the specified time.
     if (instant % 300 == 0 && (instant / 100) % 2 == 1) {
         this.x = this.xLocations[Math.floor(Math.random()*this.xLocations.length)];
         this.y = this.yLocations[Math.floor(Math.random()*this.yLocations.length)];
@@ -203,7 +203,7 @@ Gems.prototype.update = function() {
     } else if (instant % 300 == 0 && (instant / 100) % 2 == 0) {
         this.x = -100;
         this.y = -100;
-    };
+    }
     // A call to gemCheckCollision to check if the player has collected a gem or not.
     this.gemCheckCollision();
 };
@@ -222,7 +222,7 @@ Gems.prototype.gemCheckCollision = function() {
         score.update(5);
         this.x = -100;
         this.y = -100;
-    };
+    }
 };
 
 // Objects are instantiated.
@@ -251,6 +251,6 @@ document.addEventListener('keydown', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
     // Finally, enemyChanger() is called to check if the user wants to chenge the enemy image.
     // I didn't make this a method of Enemy because I didn't want to call it multiple
-    // times for each enemy object whenever a key is pressed.  
+    // times for each enemy object whenever a key is pressed.
     enemyChanger(allowedKeys[e.keyCode]);
 });
