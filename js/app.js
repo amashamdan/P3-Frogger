@@ -231,9 +231,9 @@ Gems.prototype.gemCheckCollision = function() {
 // Objects are instantiated.
 var player = new Player();
 var allEnemies = [];
-allEnemies.push(new Enemy());
-allEnemies.push(new Enemy());
-allEnemies.push(new Enemy());
+for (var i = 0; i < 3; i++) {
+    allEnemies.push(new Enemy());
+}
 var score = new Score();
 var time = new Time();
 var gem = new Gems();
